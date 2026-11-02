@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="id"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login · InventarisKu</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="login-body">
+  <div class="login-decoration decor-one"></div><div class="login-decoration decor-two"></div>
+  <div class="login-shell">
+    <section class="login-brand-panel">
+      <div class="login-brand"><span class="brand-mark">I</span><span>Inventaris<span class="brand-light">Ku</span></span></div>
+      <div class="login-illustration"><div class="illustration-orbit orbit-a"></div><div class="illustration-orbit orbit-b"></div><div class="box-illustration"><span>▤</span></div><div class="float-card float-card-a">✓ Data tersimpan</div><div class="float-card float-card-b">↗ Stok terpantau</div></div>
+      <div class="login-brand-copy"><span class="eyebrow">SMART INVENTORY SYSTEM</span><h1>Kelola inventaris<br>lebih mudah.</h1><p>Satu tempat untuk memantau barang, stok, lokasi, dan seluruh aktivitas inventaris.</p></div>
+      <div class="login-panel-foot">Sistem Informasi Inventaris Barang · 2026</div>
+    </section>
+    <section class="login-form-panel">
+      <div class="login-form-wrap">
+        <div class="login-mobile-brand"><span class="brand-mark">I</span><strong>InventarisKu</strong></div>
+        <span class="eyebrow blue-eyebrow">SELAMAT DATANG KEMBALI</span>
+        <h2>Masuk ke akun</h2><p class="muted-text">Masukkan username dan password untuk melanjutkan.</p>
+        {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}{% for category, message in messages %}<div class="flash flash-{{ category }}"><span>{{ message }}</span></div>{% endfor %}{% endif %}{% endwith %}
+        <form method="post" class="login-form">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <label for="username">Username</label><div class="input-with-icon"><span>♙</span><input id="username" name="username" type="text" placeholder="Masukkan username" autocomplete="username" required autofocus></div>
+          <label for="password">Password</label><div class="input-with-icon"><span>◈</span><input id="password" name="password" type="password" placeholder="Masukkan password" autocomplete="current-password" required><button type="button" class="show-password" onclick="const p=document.getElementById('password');p.type=p.type==='password'?'text':'password'">Lihat</button></div>
+          <button class="btn btn-primary btn-full" type="submit">Masuk ke Dashboard <span>→</span></button>
+        </form>
+        <div class="login-note"><span>ⓘ</span> Akses akun diberikan oleh administrator sistem.</div>
+      </div>
+    </section>
+  </div>
+</body></html>

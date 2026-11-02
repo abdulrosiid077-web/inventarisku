@@ -1,0 +1,20 @@
+CARA PALING SINGKAT MENJALANKAN INVENTARISKU (WINDOWS)
+
+1. Pastikan MySQL/MariaDB aktif, lalu import sql/db_invetaris.sql ke database db_invetaris.
+2. Buka folder ini di VS Code.
+3. Buka Terminal > New Terminal, lalu jalankan:
+
+   python -m venv venv
+   venv\Scripts\python.exe -m pip install -r requirements.txt
+   venv\Scripts\python.exe init_db.py
+   venv\Scripts\python.exe app.py
+
+4. Buka browser: http://127.0.0.1:5000
+
+Login Admin: admin / Admin123!
+Login User : user01 / User123!
+
+Jika MySQL lu punya password, edit DB_PASSWORD di file .env terlebih dahulu.
+Kalau nama database bukan db_invetaris, sesuaikan DB_NAME di .env.
+
+JANGAN unggah .env ke GitHub. Ganti password demo dan SECRET_KEY sebelum hosting.

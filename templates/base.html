@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}InventarisKu{% endblock %} · InventarisKu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% block head %}{% endblock %}
+</head>
+<body class="app-body">
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="{{ url_for('dashboard') }}">
+      <span class="brand-mark">I</span><span>Inventaris<span class="brand-light">Ku</span><small>MANAGEMENT SYSTEM</small></span>
+    </a>
+    <div class="side-label">MENU UTAMA</div>
+    <nav class="side-nav">
+      <a class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}" href="{{ url_for('dashboard') }}"><span class="nav-icon">▦</span>Dashboard</a>
+      <a class="nav-link {% if request.endpoint and request.endpoint.startswith('barang_') %}active{% endif %}" href="{{ url_for('barang_index') }}"><span class="nav-icon">▤</span>Data Barang</a>
+      <a class="nav-link {% if request.endpoint and request.endpoint.startswith('kategori_') %}active{% endif %}" href="{{ url_for('kategori_index') }}"><span class="nav-icon">▧</span>Kategori</a>
+      <a class="nav-link {% if request.endpoint and request.endpoint.startswith('lokasi_') %}active{% endif %}" href="{{ url_for('lokasi_index') }}"><span class="nav-icon">⌖</span>Lokasi</a>
+      <a class="nav-link {% if request.endpoint and request.endpoint.startswith('transaksi_') %}active{% endif %}" href="{{ url_for('transaksi_index') }}"><span class="nav-icon">⇄</span>Transaksi</a>
+      <a class="nav-link {% if request.endpoint and request.endpoint.startswith('laporan_') %}active{% endif %}" href="{{ url_for('laporan_index') }}"><span class="nav-icon">▥</span>Laporan</a>
+    </nav>
+    {% if current_user.role == 'admin' %}
+    <div class="side-label side-label-spaced">ADMINISTRASI</div>
+    <nav class="side-nav">
+      <a class="nav-link {% if request.endpoint and request.endpoint.startswith('pengguna_') %}active{% endif %}" href="{{ url_for('pengguna_index') }}"><span class="nav-icon">♙</span>Pengguna</a>
+    </nav>
+    {% endif %}
+    <div class="sidebar-bottom">
+      <div class="side-help"><div class="help-icon">?</div><div><strong>Butuh bantuan?</strong><small>Hubungi administrator sistem.</small></div></div>
+      <div class="side-version">INVENTARISKU · 1.0.0</div>
+    </div>
+  </aside>
+
+  <main class="main-area">
+    <header class="topbar">
+      <button class="mobile-menu" onclick="document.getElementById('sidebar').classList.toggle('open')" aria-label="Buka menu">☰</button>
+      <div class="breadcrumb">Workspace <span>/</span> <strong>{% block breadcrumb %}Dashboard{% endblock %}</strong></div>
+      <div class="top-user">
+        <div class="top-user-text"><strong>{{ current_user.nama }}</strong><small>{{ 'Administrator' if current_user.role == 'admin' else 'Pengguna' }}</small></div>
+        <div class="avatar">{{ current_user.nama[:1]|upper }}</div>
+        <a class="profile-link" href="{{ url_for('profil') }}" title="Profil">⚙</a>
+        <form method="post" action="{{ url_for('logout') }}" class="logout-form">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="logout-button" title="Logout">Keluar ↗</button>
+        </form>
+      </div>
+    </header>
+
+    <section class="page-content">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}<div class="flash-stack">
+          {% for category, message in messages %}<div class="flash flash-{{ category }}"><span>{{ message }}</span><button onclick="this.parentElement.remove()" aria-label="Tutup">×</button></div>{% endfor %}
+        </div>{% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </section>
+    <footer class="footer">© {{ tahun_sekarang }} InventarisKu · Sistem Informasi Inventaris Barang</footer>
+  </main>
+  <script>
+    document.querySelectorAll('[data-confirm]').forEach(function(form) {
+      form.addEventListener('submit', function(e) {
+        if (!confirm(form.getAttribute('data-confirm'))) e.preventDefault();
+      });
+    });
+  </script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

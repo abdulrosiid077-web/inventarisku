@@ -1,0 +1,39 @@
+erDiagram
+    KATEGORI ||--o{ BARANG : mengelompokkan
+    LOKASI ||--o{ BARANG : menyimpan
+    BARANG ||--o{ TRANSAKSI : memiliki
+
+    KATEGORI {
+        int id_kategori PK
+        varchar nama_kategori
+    }
+    LOKASI {
+        int id_lokasi PK
+        varchar nama_lokasi
+        text keterangan
+    }
+    BARANG {
+        int id_barang PK
+        varchar kode_barang UK
+        varchar nama_barang
+        int id_kategori FK
+        int id_lokasi FK
+        int stok
+        varchar kondisi
+    }
+    TRANSAKSI {
+        int id_transaksi PK
+        int id_barang FK
+        varchar jenis_transaksi
+        int jumlah
+        date tanggal
+        text keterangan
+    }
+    USERS {
+        int id_user PK
+        varchar nama
+        varchar username UK
+        varchar password
+        enum role
+        timestamp created_at
+    }

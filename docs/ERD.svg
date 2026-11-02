@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="690" viewBox="0 0 1180 690">
+<defs><style>
+.title{font:700 27px Arial;fill:#183153}.sub{font:14px Arial;fill:#718096}.box{fill:#fff;stroke:#b8c9e3;stroke-width:2;rx:12}.head{fill:#eaf1ff}.headtext{font:700 16px Arial;fill:#2454a6}.field{font:14px Arial;fill:#34445c}.key{font:700 12px Arial;fill:#3268d6}.line{stroke:#6d86ae;stroke-width:2.3;fill:none}.label{font:13px Arial;fill:#526985;font-weight:700}.cardshadow{filter:drop-shadow(0px 4px 7px #16345b12)}
+</style></defs>
+<rect width="1180" height="690" fill="#f7f9fd"/>
+<text x="55" y="52" class="title">ERD — Sistem Informasi Inventaris Barang</text>
+<text x="55" y="78" class="sub">Relasi tabel inti dan tabel autentikasi pengguna</text>
+<!-- KATEGORI -->
+<g class="cardshadow"><rect class="box" x="60" y="145" width="250" height="170"/><path class="head" d="M72 145h226a12 12 0 0 1 12 12v32H60v-32a12 12 0 0 1 12-12z"/><text x="82" y="176" class="headtext">KATEGORI</text><text x="82" y="215" class="key">PK</text><text x="120" y="215" class="field">id_kategori</text><text x="82" y="246" class="field">nama_kategori</text></g>
+<!-- LOKASI -->
+<g class="cardshadow"><rect class="box" x="60" y="410" width="250" height="190"/><path class="head" d="M72 410h226a12 12 0 0 1 12 12v32H60v-32a12 12 0 0 1 12-12z"/><text x="82" y="441" class="headtext">LOKASI</text><text x="82" y="480" class="key">PK</text><text x="120" y="480" class="field">id_lokasi</text><text x="82" y="511" class="field">nama_lokasi</text><text x="82" y="542" class="field">keterangan</text></g>
+<!-- BARANG -->
+<g class="cardshadow"><rect class="box" x="445" y="230" width="300" height="295"/><path class="head" d="M457 230h276a12 12 0 0 1 12 12v32H445v-32a12 12 0 0 1 12-12z"/><text x="467" y="261" class="headtext">BARANG</text><text x="467" y="303" class="key">PK</text><text x="505" y="303" class="field">id_barang</text><text x="467" y="333" class="key">UK</text><text x="505" y="333" class="field">kode_barang</text><text x="467" y="363" class="field">nama_barang</text><text x="467" y="393" class="key">FK</text><text x="505" y="393" class="field">id_kategori</text><text x="467" y="423" class="key">FK</text><text x="505" y="423" class="field">id_lokasi</text><text x="467" y="453" class="field">stok</text><text x="467" y="483" class="field">kondisi</text></g>
+<!-- TRANSAKSI -->
+<g class="cardshadow"><rect class="box" x="845" y="230" width="285" height="260"/><path class="head" d="M857 230h261a12 12 0 0 1 12 12v32H845v-32a12 12 0 0 1 12-12z"/><text x="867" y="261" class="headtext">TRANSAKSI</text><text x="867" y="303" class="key">PK</text><text x="905" y="303" class="field">id_transaksi</text><text x="867" y="333" class="key">FK</text><text x="905" y="333" class="field">id_barang</text><text x="867" y="363" class="field">jenis_transaksi</text><text x="867" y="393" class="field">jumlah</text><text x="867" y="423" class="field">tanggal</text><text x="867" y="453" class="field">keterangan</text></g>
+<!-- USERS -->
+<g class="cardshadow"><rect class="box" x="445" y="35" width="300" height="145"/><path class="head" d="M457 35h276a12 12 0 0 1 12 12v32H445V47a12 12 0 0 1 12-12z"/><text x="467" y="66" class="headtext">USERS</text><text x="467" y="108" class="key">PK</text><text x="505" y="108" class="field">id_user</text><text x="467" y="136" class="field">nama, username, password</text><text x="467" y="160" class="field">role, created_at</text></g>
+<!-- Relationships -->
+<path class="line" d="M310 230 H370 V300 H445"/><text x="330" y="216" class="label">1 : N</text><text x="322" y="289" class="sub">id_kategori</text>
+<path class="line" d="M310 500 H370 V450 H445"/><text x="330" y="520" class="label">1 : N</text><text x="320" y="470" class="sub">id_lokasi</text>
+<path class="line" d="M745 350 H845"/><text x="770" y="335" class="label">1 : N</text><text x="770" y="373" class="sub">id_barang</text>
+<text x="60" y="655" class="sub">PK = Primary Key · FK = Foreign Key · UK = Unique Key · USERS dipakai untuk autentikasi role Admin/User (tidak terhubung langsung ke tabel barang).</text>
+</svg>

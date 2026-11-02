@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}{% block breadcrumb %}Dashboard{% endblock %}
+{% block content %}
+<div class="page-heading"><div><span class="eyebrow">RINGKASAN INVENTARIS</span><h1>Dashboard</h1><p>Halo {{ current_user.nama.split(' ')[0] }}, berikut ringkasan inventaris hari ini.</p></div><div class="heading-date">◷ {{ tanggal_hari_ini }}</div></div>
+<div class="stats-grid">
+  <article class="stat-card"><div class="stat-top"><span>Total Jenis Barang</span><span class="stat-icon stat-blue">▤</span></div><div class="stat-value">{{ '{:,}'.format(total_jenis).replace(',', '.') }}</div><div class="stat-foot">Item terdaftar dalam sistem</div></article>
+  <article class="stat-card"><div class="stat-top"><span>Total Stok Barang</span><span class="stat-icon stat-violet">▦</span></div><div class="stat-value">{{ '{:,}'.format(total_stok).replace(',', '.') }}</div><div class="stat-foot">Akumulasi seluruh unit barang</div></article>
+  <article class="stat-card"><div class="stat-top"><span>Kategori</span><span class="stat-icon stat-orange">▧</span></div><div class="stat-value">{{ total_kategori }}</div><div class="stat-foot">Kelompok barang</div></article>
+  <article class="stat-card"><div class="stat-top"><span>Lokasi Penyimpanan</span><span class="stat-icon stat-green">⌖</span></div><div class="stat-value">{{ total_lokasi }}</div><div class="stat-foot">Lokasi terdaftar</div></article>
+</div>
+<div class="stats-grid stats-grid-small">
+  <article class="mini-stat"><span class="mini-dot dot-green"></span><div><small>Total unit barang masuk</small><strong>{{ total_masuk }}</strong></div><span class="mini-arrow">↗</span></article>
+  <article class="mini-stat"><span class="mini-dot dot-orange"></span><div><small>Total unit barang keluar</small><strong>{{ total_keluar }}</strong></div><span class="mini-arrow">↘</span></article>
+</div>
+<div class="dashboard-grid">
+  <section class="panel chart-panel"><div class="panel-heading"><div><h3>Aktivitas Transaksi</h3><p>Jumlah unit barang masuk dan keluar</p></div><span class="period-tag">6 bulan terakhir</span></div>
+    {% if chart_labels %}<div class="chart-bars">{% set max_value = ([chart_masuk|max, chart_keluar|max, 1]|max) %}{% for label in chart_labels %}<div class="chart-column"><div class="bar-pair"><div class="bar bar-in" style="height:{{ (chart_masuk[loop.index0] / max_value * 100)|round }}%" title="Masuk {{ chart_masuk[loop.index0] }}"></div><div class="bar bar-out" style="height:{{ (chart_keluar[loop.index0] / max_value * 100)|round }}%" title="Keluar {{ chart_keluar[loop.index0] }}"></div></div><small>{{ label }}</small></div>{% endfor %}</div><div class="chart-legend"><span><i class="legend-in"></i> Barang masuk</span><span><i class="legend-out"></i> Barang keluar</span></div>{% else %}<div class="empty-state compact"><div class="empty-icon">▥</div><strong>Belum ada aktivitas</strong><p>Data transaksi akan muncul setelah ada transaksi.</p></div>{% endif %}
+  </section>
+  <section class="panel low-stock-panel"><div class="panel-heading"><div><h3>Perlu Perhatian</h3><p>Barang dengan stok 5 unit atau kurang</p></div><span class="count-pill">{{ stok_rendah|length }}</span></div>
+    {% if stok_rendah %}<div class="low-stock-list">{% for item in stok_rendah %}<div class="low-stock-row"><div class="item-avatar">{{ item.nama_barang[:1]|upper }}</div><div class="low-stock-name"><strong>{{ item.nama_barang }}</strong><small>{{ item.kode_barang }}</small></div><span class="stock-badge {% if item.stok <= 2 %}critical{% else %}warning{% endif %}">{{ item.stok }} unit</span></div>{% endfor %}</div>{% else %}<div class="empty-state compact"><div class="empty-icon">✓</div><strong>Stok aman</strong><p>Tidak ada stok rendah saat ini.</p></div>{% endif %}
+  </section>
+</div>
+<section class="panel recent-panel"><div class="panel-heading"><div><h3>Transaksi Terbaru</h3><p>Aktivitas inventaris yang terakhir dicatat</p></div><a class="text-link" href="{{ url_for('transaksi_index') }}">Lihat semua →</a></div>
+  {% if transaksi_terbaru %}<div class="table-wrap"><table><thead><tr><th>Barang</th><th>Tanggal</th><th>Jenis</th><th>Jumlah</th><th>Keterangan</th></tr></thead><tbody>{% for t in transaksi_terbaru %}<tr><td><div class="table-primary">{{ t.barang.nama_barang if t.barang else 'Barang dihapus' }}</div><div class="table-secondary">{{ t.barang.kode_barang if t.barang else '-' }}</div></td><td>{{ t.tanggal.strftime('%d/%m/%Y') if t.tanggal else '-' }}</td><td><span class="status-pill {{ 'status-in' if t.jenis_transaksi == 'Masuk' else 'status-out' }}">{{ t.jenis_transaksi }}</span></td><td><strong>{{ t.jumlah }}</strong> unit</td><td class="muted-cell">{{ t.keterangan or '-' }}</td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty-state"><div class="empty-icon">⇄</div><strong>Belum ada transaksi</strong><p>Riwayat transaksi akan tampil di sini.</p></div>{% endif %}
+</section>
+{% endblock %}
