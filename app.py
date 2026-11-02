@@ -17,10 +17,13 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 from sqlalchemy import URL, func, or_
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 load_dotenv()
 
 app = Flask(__name__)
+# Hormati header HTTPS dari reverse proxy pada hosting.
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "dev-only-change-this-key")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SESSION_COOKIE_HTTPONLY"] = True
@@ -191,6 +194,12 @@ def inject_globals():
 @app.route("/")
 def index():
     return redirect(url_for("dashboard" if current_user.is_authenticated else "login"))
+
+
+@app.route("/favicon.ico")
+def favicon():
+    # No custom favicon yet; return an empty success response instead of a 404.
+    return "", 204
 
 
 @app.route("/login", methods=["GET", "POST"])
